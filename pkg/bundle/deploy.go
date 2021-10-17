@@ -4054,7 +4054,7 @@ spec:
   sourceNamespace: default
 `
 
-const Sha256_deploy_operator_yaml = "3030f31026433e2737957a3f153739ce3d1a69cf11813d27b4fd95e7452ee3df"
+const Sha256_deploy_operator_yaml = "1c734ca491a04d435bc67bdc71f616a2a44b3d4e00327bd6d89f54d69f9e6e3a"
 
 const File_deploy_operator_yaml = `apiVersion: apps/v1
 kind: Deployment
@@ -4075,6 +4075,8 @@ spec:
       containers:
         - name: noobaa-operator
           image: NOOBAA_OPERATOR_IMAGE
+          ports:
+          - containerPort: 8080
           resources:
             limits:
               cpu: "250m"
@@ -4090,7 +4092,14 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-`
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/certs
+              readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: grumpy`
 
 const Sha256_deploy_role_yaml = "eb0941a5e095fa7ac391e05782e6847e419e4d0dc17f6d8151df0032c977c743"
 
